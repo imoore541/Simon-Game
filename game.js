@@ -7,11 +7,40 @@ var gamePattern = [];
 // new array with colors
 var buttonColors = ["red", "blue", "green", "yellow"];
 
+
+
+// detecting mouse clicks 
+$(".btn").click(function(){
+    // store id of button clicked in var
+        var userChosenColor = $(this).attr('id');
+    // push clicked button id to empty array
+        userClickedPattern.push(userChosenColor);
+    // plays audio cue for user clicks
+        makeSound(userChosenColor);
+    // animates button on click
+       animatePress(userChosenColor);
+    });
+
+// dectecting first keyboard click to start game
+var start = $(document).keydown(function(event) {
+
+    var i = event.keyCode;
+    var started = (i == true);
+        if (gamePattern == started) {
+        nextSequence();
+    }
+    var level = "Level 0";
+if (gamePattern[0] == true){
+    $("#level-title").innerHTML(level)
+}
+}) 
+
+
+
 // random num gen function
     function nextSequence() {
     
 var randomNumber = Math.floor(Math.random() * 4);
-
 var randomChosenColor = buttonColors[randomNumber];
 
 // part that pushes random colors to empty array
@@ -26,20 +55,18 @@ $(newSequence.fadeOut(100).fadeIn(100));
 // plays audio cue for chosen button
 var audio = newSequence.attr('id');
     makeSound(audio);
-
 }
 
-// detecting button clicks 
-var mouseClickButton = $(".btn").click(function(){
-// store id of button clicked in var
-    var userChosenColor = $(this).attr('id');
-// push clicked button id to empty array
-    userClickedPattern.push(userChosenColor);
-// plays audio cue for user clicks
-    makeSound(userChosenColor);
-});
+// function for clicked button animation
+function animatePress(currentColor) {
 
+    var tileAnimate = $("#" + currentColor).addClass('pressed');
+        setTimeout(() => {
+    $(tileAnimate).removeClass('pressed');
+    }, 100);
+   };
 
+// function for audio
     function makeSound(key) {
 
         switch (key) {
